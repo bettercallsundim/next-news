@@ -2,8 +2,9 @@
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
 export default function Oauth({ children }) {
+  console.log(process.env.NEXT_PUBLIC_CLIENTID, "envvvv");
   return (
-    <GoogleOAuthProvider clientId="1010338471882-l1c5f38sufjcle0dgjhbdbateli8ri4b.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_CLIENTID}>
       {children}
     </GoogleOAuthProvider>
   );

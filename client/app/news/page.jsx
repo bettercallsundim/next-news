@@ -2,7 +2,7 @@ import NewsCard from "@/myComponents/NewsCard";
 
 async function getData() {
   const res = await fetch(
-    "https://newsapi.org/v2/top-headlines?country=us&apiKey=20d7fe409f074afa9f617e806689631a"
+    `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEXT_PUBLIC_NEWSAPI}`
   );
   return res.json();
 }

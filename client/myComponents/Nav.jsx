@@ -14,6 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
+import { FaHeart } from "react-icons/fa";
 import { context } from "./Context";
 
 export default function NavigationMenuDemo() {
@@ -42,7 +43,10 @@ export default function NavigationMenuDemo() {
         <NavigationMenuItem>
           <Link href="/about" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Saved
+              Saved{" "}
+              <span className="ml-2">
+                <FaHeart size="20px" />
+              </span>
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
@@ -52,6 +56,12 @@ export default function NavigationMenuDemo() {
               onSuccess={(credentialResponse) => {
                 setState({ ...state, user: credentialResponse.credential });
                 router.push("/news");
+                localStorage.setItem(
+                  "state",
+                  JSON.stringify({
+                    user: credentialResponse.credential,
+                  })
+                );
                 console.log(credentialResponse);
               }}
               onError={() => {
@@ -62,15 +72,18 @@ export default function NavigationMenuDemo() {
         )}
         {userFound && (
           <NavigationMenuItem>
-            <button
-              onClick={() => {
-                setState({ ...state, user: undefined });
-                router.push("/");
-                googleLogout();
-              }}
-            >
-              Logout
-            </button>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <button
+                onClick={() => {
+                  setState({ ...state, user: undefined });
+                  localStorage.removeItem("state");
+                  router.push("/");
+                  googleLogout();
+                }}
+              >
+                Logout
+              </button>
+            </NavigationMenuLink>
           </NavigationMenuItem>
         )}
         <NavigationMenuItem>
