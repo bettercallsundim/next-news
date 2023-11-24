@@ -1,45 +1,25 @@
 import mongoose from "mongoose";
 const UserSchema = new mongoose.Schema({
-  idno: {
+  id: {
     type: Number,
     required: true,
     unique: true,
   },
-  batch: {
-    type: Number,
-    required: true,
-  },
-  password: {
+  picture: {
     type: String,
-    required: true,
-  },
-  profilePic: {
-    type: String,
-    required: false,
-  },
-  lastDonated: {
-    type: Date,
-  },
-  isInterested: {
-    type: Boolean,
-    default: true,
-  },
-  bgroup: {
-    type: String,
-    enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
-  },
-  isAdmin: {
-    type: Boolean,
-    default: false,
   },
   email: {
     type: String,
     required: true,
-    trim: true,
     unique: true,
   },
-  resetPasswordToken: String,
-  resetPasswordExpire: Date,
+  name: {
+    type: String,
+  },
+  saved_news: {
+    type: [],
+    default: [],
+  },
 });
 
 export default mongoose.model("User", UserSchema);

@@ -10,5 +10,5 @@ export default function page() {
     },
   } = useContext(context);
   if (!title) return <Loader />;
-  return <div>{title}</div>;
+  return <div className="text-[50px]">{title}</div>;
 }

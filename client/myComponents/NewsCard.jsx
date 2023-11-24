@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
@@ -20,13 +21,32 @@ export default function NewsCard({ className, ...props }) {
   const { news } = props;
   const router = useRouter();
   const { state, setState } = useContext(context);
-  console.log("state", state);
+  const { user } = state;
   const [fav, setFave] = useState(false);
   function handleClick(article) {
     setState({ ...state, current: article });
     router.push(`/news/${article.title.split(" ").join("-")}`);
   }
-  function toggleFav() {
+  async function handleFav(news) {
+    setFave(!fav);
+    console.log(state);
+    if (user?.token) {
+      await axios
+        .post(`${process.env.NEXT_PUBLIC_BACKEND}/news/save`, {
+          news,
+          user,
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("something wrong");
+    }
+  }
+  function handleUnfav() {
     setFave(!fav);
   }
   return (
@@ -35,9 +55,25 @@ export default function NewsCard({ className, ...props }) {
         <CardTitle>{news.title}</CardTitle>
         <div className="flex justify-between">
           <CardDescription>{news.source.name}</CardDescription>
-          <button onClick={toggleFav}>
-            {fav ? <FaHeart size="20px" /> : <FaRegHeart size="20px" />}
-          </button>
+          {fav ? (
+            <button onClick={handleUnfav}>
+              <FaHeart size="20px" />
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                handleFav({
+                  title: news.title,
+                  description: news.description,
+                  content: news.content,
+                  img: news.urlToImage,
+                  url: news.url,
+                });
+              }}
+            >
+              <FaRegHeart size="20px" />
+            </button>
+          )}
         </div>
       </CardHeader>
       <CardContent className="grid gap-4">

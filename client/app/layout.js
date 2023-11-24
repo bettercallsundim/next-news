@@ -1,10 +1,11 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import Context from "@/myComponents/Context";
 import NavigationMenuDemo from "@/myComponents/Nav";
+import Oauth from "@/myComponents/Oauth";
 import ReactQuery from "@/myComponents/ReactQuery";
 import { Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
-import Oauth from "@/myComponents/Oauth";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,12 +25,13 @@ export default function RootLayout({ children }) {
           disableTransitionOnChange
         >
           <Oauth>
-          <ReactQuery>
-            <Context>
-              <NavigationMenuDemo />
-              {children}
-            </Context>
-          </ReactQuery>
+            <ReactQuery>
+              <Context>
+                <NavigationMenuDemo />
+                {children}
+                <Toaster />
+              </Context>
+            </ReactQuery>
           </Oauth>
         </ThemeProvider>
       </body>

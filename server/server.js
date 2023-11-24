@@ -6,7 +6,7 @@ import express from "express";
 import helmet from "helmet";
 import mongoose from "mongoose";
 import authRoutes from "./routes/authRoutes.js";
-import bloodRoutes from "./routes/bloodRoutes.js";
+import newsRoutes from "./routes/newsRoutes.js";
 // import { errorLogger } from "./middlewares/Error_handler.js";
 
 dotenv.config();
@@ -24,7 +24,7 @@ app.disable("x-powered-by");
 app.use(express.json());
 app.use(cookieParser());
 app.use("/auth", authRoutes);
-app.use("/blood", bloodRoutes);
+app.use("/news", newsRoutes);
 
 mongoose
   .connect(process.env.MONGO, {
@@ -32,15 +32,11 @@ mongoose
     useUnifiedTopology: true,
   })
   .then((res) => {
-
     app.get("/", (req, res) => {
-      res.send("Hello from LOL");
+      res.send("Hello from Backend");
     });
     console.log("DB connected");
-    const errorLogger = (err, req, res, next) => {
-      console.log("req time", req.requestTime);
-      next();
-    };
+
     app.listen(4000, console.log("Server started"));
   })
   .catch((err) => {

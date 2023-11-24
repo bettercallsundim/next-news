@@ -13,14 +13,64 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
+import axios from "axios";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import { FaHeart } from "react-icons/fa";
 import { context } from "./Context";
 
 export default function NavigationMenuDemo() {
   const router = useRouter();
   const { state, setState } = React.useContext(context);
+  const [user, setUser] = React.useState({});
   const userFound = state?.user;
+  const logged_in = () => toast.success("Successfully logged in");
+  React.useEffect(() => {
+    const retrieved_user = JSON.parse(localStorage.getItem("state"))?.user;
+    setUser({
+      ...retrieved_user,
+    });
+  }, []);
+  async function signUp(cred) {
+    try {
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND}/auth/signup`,
+        {
+          credentials: cred,
+        }
+      );
+      if (data.success) {
+        const retrieved = JSON.parse(localStorage.getItem("state"));
+        localStorage.setItem(
+          "state",
+          JSON.stringify({
+            ...retrieved,
+            user: {
+              ...retrieved.user,
+              name: data.data.name,
+              email: data.data.email,
+              picture: data.data.picture,
+              saved_news: data.data.saved_news,
+            },
+          })
+        );
+        setState({
+          ...retrieved,
+          user: {
+            ...retrieved.user,
+            name: data.data.name,
+            email: data.data.email,
+            picture: data.data.picture,
+            saved_news: data.data.saved_news,
+          },
+        });
+        const again_retrieved = JSON.parse(localStorage.getItem("state"))?.user;
+        setUser(again_retrieved);
+      }
+    } catch (er) {
+      console.log(er);
+    }
+  }
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -54,19 +104,42 @@ export default function NavigationMenuDemo() {
           <NavigationMenuItem>
             <GoogleLogin
               onSuccess={(credentialResponse) => {
-                setState({ ...state, user: credentialResponse.credential });
+                setState({
+                  ...state,
+                  user: {
+                    ...state.user,
+                    token: credentialResponse.credential,
+                  },
+                });
                 router.push("/news");
+                signUp(credentialResponse);
+                const retrieved = JSON.parse(
+                  localStorage.getItem("state")
+                )?.user;
+                console.log(retrieved);
                 localStorage.setItem(
                   "state",
                   JSON.stringify({
-                    user: credentialResponse.credential,
+                    user: {
+                      ...retrieved,
+                      token: credentialResponse.credential,
+                    },
                   })
                 );
                 console.log(credentialResponse);
+                logged_in();
               }}
               onError={() => {
                 console.log("Login Failed");
               }}
+            />
+          </NavigationMenuItem>
+        )}
+        {user?.email && (
+          <NavigationMenuItem>
+            <img
+              className="w-10 h-10 rounded-full inline-block"
+              src={user?.picture}
             />
           </NavigationMenuItem>
         )}
@@ -79,6 +152,7 @@ export default function NavigationMenuDemo() {
                   localStorage.removeItem("state");
                   router.push("/");
                   googleLogout();
+                  setUser(null);
                 }}
               >
                 Logout

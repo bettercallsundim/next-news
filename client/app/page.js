@@ -1,9 +1,8 @@
-import Card from "@/components/Card";
-import News from "@/myComponents/News";
+import Slider from "@/myComponents/Slider";
 export default function Home() {
   return (
-    <div>
-      <p className="bg-primary-foreground text-primary">hello</p>
+    <div className="min-h-screen min-w-full">
+      <Slider />
     </div>
   );
 }
