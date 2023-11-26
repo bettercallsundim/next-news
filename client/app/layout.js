@@ -6,7 +6,6 @@ import ReactQuery from "@/myComponents/ReactQuery";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
-import { QueryClient, QueryClientProvider } from "react-query";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +15,6 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const queryClient = new QueryClient()
 
   return (
     <html lang="en">
@@ -28,14 +26,13 @@ export default function RootLayout({ children }) {
           disableTransitionOnChange
         >
           <Oauth>
-          <QueryClientProvider client={queryClient}>
+            <ReactQuery>
               <Context>
                 <NavigationMenuDemo />
                 {children}
                 <Toaster />
               </Context>
-              </QueryClientProvider>
-
+            </ReactQuery>
           </Oauth>
         </ThemeProvider>
       </body>
