@@ -17,7 +17,7 @@ export default function Slider() {
       `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEXT_PUBLIC_NEWSAPI}`
     );
     const resp = await res.json();
-    setNews(resp.articles);
+    setNews(resp?.articles);
     return;
   }
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function Slider() {
     >
       {news?.map((elm) => (
         <SwiperSlide className="">
-          <img className="w-[500px]" src={elm.urlToImage} alt="" />
+          <img className="w-[500px]" src={elm?.urlToImage} alt="" />
         </SwiperSlide>
       ))}
     </Swiper>
