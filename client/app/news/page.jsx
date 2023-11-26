@@ -1,4 +1,6 @@
+"use client";
 import NewsCard from "@/myComponents/NewsCard";
+import { useQuery } from "@tanstack/react-query";
 
 async function getData() {
   const res = await fetch(
@@ -7,13 +9,13 @@ async function getData() {
   return res.json();
 }
 export default async function News() {
-  // const { isLoading, error, data } = useQuery("news", () =>
-  //   fetch(
-  //     "https://jsonplaceholder.typicode.com/users"
-  //   ).then((res) => res.json())
-  // );
-  // console.log(data);
-  const data = await getData();
+  const { isLoading, error, data } = useQuery("news", () =>
+    fetch(
+      `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEXT_PUBLIC_NEWSAPI}`
+    ).then((res) => res.json())
+  );
+  console.log(data);
+
   return (
     <div>
       <div className="flex flex-wrap justify-evenly gap-8">

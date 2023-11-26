@@ -24,24 +24,22 @@ export default function Slider() {
     getData();
   }, []);
   return (
-    <div>
-      <Swiper
-        // install Swiper modules
-        modules={[Navigation, Pagination, Scrollbar, A11y]}
-        spaceBetween={50}
-        slidesPerView={1}
-        navigation
-        pagination={{ clickable: true }}
-        scrollbar={{ draggable: true }}
-        onSwiper={(swiper) => console.log(swiper)}
-        onSlideChange={() => console.log("slide change")}
-      >
-        {news.map((elm) => (
-          <SwiperSlide className="">
-            <img className="w-[500px]" src={elm.urlToImage} alt="" />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
+    <Swiper
+      // install Swiper modules
+      modules={[Navigation, Pagination, Scrollbar, A11y]}
+      spaceBetween={50}
+      slidesPerView={1}
+      navigation
+      pagination={{ clickable: true }}
+      scrollbar={{ draggable: true }}
+      onSwiper={(swiper) => console.log(swiper)}
+      onSlideChange={() => console.log("slide change")}
+    >
+      {news?.map((elm) => (
+        <SwiperSlide className="">
+          <img className="w-[500px]" src={elm.urlToImage} alt="" />
+        </SwiperSlide>
+      ))}
+    </Swiper>
   );
 }
