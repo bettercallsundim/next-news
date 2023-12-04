@@ -52,9 +52,9 @@ export default function NewsCard({ className, ...props }) {
   return (
     <Card className={cn("", className)} {...props}>
       <CardHeader>
-        <CardTitle>{news.title}</CardTitle>
+        <CardTitle>{news?.title}</CardTitle>
         <div className="flex justify-between">
-          <CardDescription>{news.source.name}</CardDescription>
+          <CardDescription>{news?.source?.name || ""}</CardDescription>
           {fav ? (
             <button onClick={handleUnfav}>
               <FaHeart size="20px" />
@@ -80,10 +80,10 @@ export default function NewsCard({ className, ...props }) {
         <div className=" flex items-center space-x-4 rounded-md ">
           <div className="flex-1 space-y-1">
             <p className="mb-4">
-              <img src={news.urlToImage} alt="" />
+              <img src={news.urlToImage || news.img} alt="" />
             </p>
             <p className="text-sm font-medium leading-none">
-              {news.description}
+              {news.description || news.content}
             </p>
           </div>
         </div>

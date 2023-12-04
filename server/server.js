@@ -16,7 +16,7 @@ app.use(helmet());
 app.use(compression());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://next-news-pearl.vercel.app"],
     credentials: true,
   })
 );

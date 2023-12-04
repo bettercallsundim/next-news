@@ -91,7 +91,7 @@ export default function NavigationMenuDemo() {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <Link href="/about" legacyBehavior passHref>
+          <Link href="/saved" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Saved{" "}
               <span className="ml-2">
